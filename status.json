@@ -1,10 +1,10 @@
 {
-  "status": "safe",
-  "name": "Marco",
+  "status": "lost",
+  "name": "Giacomo V",
   "message_it": "",
   "message_en": "",
-  "email": "trova.mio.zaino@gmail.com",
-  "whatsapp": "",
-  "phone": "",
-  "reward": true
+  "email": "lost.my.bag@gmail.com",
+  "whatsapp": "+39 3408725545",
+  "phone": "+39 3408725545",
+  "reward": false,
 }
