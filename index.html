@@ -449,11 +449,10 @@ async function load(){
     DATA = JSON.parse(fileContent); 
     OFFLINE = false;
   }catch(e){
+    console.error("Ecco l'errore:", e);
     OFFLINE = !!FALLBACK_EMAIL;
     DATA = OFFLINE ? null : {status:'safe'};
   }
-  render();
-}
 
 document.querySelectorAll('.langs button').forEach(b=>b.addEventListener('click',()=>{ LANG=b.dataset.lang; render(); }));
 load();
