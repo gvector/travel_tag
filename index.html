@@ -318,7 +318,8 @@
 <script>
 /* Dove sta il file che accende/spegne il tag. Se lo tieni nella
    stessa cartella, lascia './status.json'. */
-const STATUS_URL = 'https://gist.githubusercontent.com/gvector/84eb2779a065ad4e6f6bd8265ff8f5ea/raw/status.json';
+//const STATUS_URL = 'https://gist.githubusercontent.com/gvector/84eb2779a065ad4e6f6bd8265ff8f5ea/raw/status.json';
+const STATUS_URL = 'https://api.github.com/gists/84eb2779a065ad4e6f6bd8265ff8f5ea';
 
 /* Contatto di riserva: mostrato SOLO se la pagina non riesce a
    leggere status.json (es. chi trova e' senza rete). Lascia ''
@@ -438,10 +439,20 @@ async function load(){
   try{
     const res=await fetch(STATUS_URL+'?t='+Date.now(),{cache:'no-store'});
     if(!res.ok) throw new Error('status '+res.status);
-    DATA=await res.json(); OFFLINE=false;
+    
+    // Leggiamo la risposta dell'API
+    const apiData = await res.json();
+    
+    // Apriamo la matrioska: files -> status.json -> content
+    const fileContent = apiData.files['status.json'].content;
+    
+    // Trasformiamo il testo in dati veri e propri
+    DATA = JSON.parse(fileContent); 
+    OFFLINE = false;
   }catch(e){
-    OFFLINE=!!FALLBACK_EMAIL;
-    DATA=OFFLINE?null:{status:'safe'};
+    console.error("Ecco l'errore:", e); // <-- Aggiungi questa riga!
+    OFFLINE = !!FALLBACK_EMAIL;
+    DATA = OFFLINE ? null : {status:'safe'};
   }
   render();
 }
