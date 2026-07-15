@@ -26,21 +26,46 @@
     --teal:       #2E7C6E;
     --radius:     18px;
     --shadow:     0 24px 60px -28px rgba(23,32,41,.45);
+    --btn-bg:     #ffffff;
+    --btn-prim-text: #241a05;
+  }
+
+  /* --- INIZIO DARK THEME AUTOMATICO --- */
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:      #121518; /* Sfondo generale (e ritagli del biglietto) */
+      --ticket:     #1C2126; /* Colore del biglietto */
+      --ink:        #E4E8EC; /* Testo principale chiaro */
+      --ink-soft:   #8B96A0; /* Testo secondario grigio */
+      --line:       #323A42; /* Linee di divisione scure */
+      --amber:      #EEA435; /* Arancione per bottoni */
+      --amber-deep: #F4C175; /* Arancione chiaro per testi */
+      --teal:       #4CCBAA; /* Verde brillante per stato "safe" */
+      --shadow:     0 24px 60px -20px rgba(0,0,0,0.8);
+      --btn-bg:     #252A30; /* Sfondo bottoni scuri */
+      --btn-prim-text: #1a1305; /* Testo scuro su bottone arancione */
+    }
   }
 
   *{ box-sizing:border-box; margin:0; padding:0; }
 
   body{
-    font-family:'Inter',system-ui,sans-serif;
-    background:radial-gradient(1100px 700px at 50% -10%, #F4F6F1 0%, var(--paper) 60%);
-    color:var(--ink);
-    min-height:100dvh;
-    display:grid;
-    place-items:center;
-    padding:24px 18px;
-    line-height:1.5;
-    -webkit-font-smoothing:antialiased;
-  }
+      font-family:'Inter',system-ui,sans-serif;
+      /* Usa un gradiente diverso in dark mode */
+      background: radial-gradient(1100px 700px at 50% -10%, color-mix(in srgb, var(--paper) 40%, #ffffff 60%) 0%, var(--paper) 60%);
+      color:var(--ink);
+      min-height:100dvh;
+      display:grid;
+      place-items:center;
+      padding:24px 18px;
+      line-height:1.5;
+      -webkit-font-smoothing:antialiased;
+    }
+    @media (prefers-color-scheme: dark) {
+      body {
+        background: radial-gradient(1100px 700px at 50% -10%, #20262B 0%, var(--paper) 60%);
+      }
+    }
 
   .ticket{
     width:100%;
