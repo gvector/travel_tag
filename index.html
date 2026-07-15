@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Found Tag</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+<style>
+  /* ============================================================
+     CONFIG — l'unica cosa da toccare qui e' STATUS_URL (piu' sotto),
+     solo se sposti status.json. Nome, contatti e on/off si
+     controllano da status.json, modificabile da qualsiasi telefono.
+     ============================================================ */
+
+  :root{
+    --paper:      #EDEFEA;
+    --ticket:     #F7F8F5;
+    --ink:        #172029;
+    --ink-soft:   #5A6672;
+    --line:       #CDD3C9;
+    --amber:      #E39A2C;
+    --amber-deep: #B9791A;
+    --teal:       #2E7C6E;
+    --radius:     18px;
+    --shadow:     0 24px 60px -28px rgba(23,32,41,.45);
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+
+  body{
+    font-family:'Inter',system-ui,sans-serif;
+    background:radial-gradient(1100px 700px at 50% -10%, #F4F6F1 0%, var(--paper) 60%);
+    color:var(--ink);
+    min-height:100dvh;
+    display:grid;
+    place-items:center;
+    padding:24px 18px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .ticket{
+    width:100%;
+    max-width:430px;
+    background:var(--ticket);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    position:relative;
+    opacity:0;
+    transform:translateY(14px);
+    animation:rise .7s cubic-bezier(.2,.8,.2,1) forwards;
+  }
+  @keyframes rise{ to{ opacity:1; transform:none; } }
+
+  /* occhiello forato: firma del "tag da bagaglio" */
+  .eyelet{
+    height:34px;
+    display:flex; align-items:center; justify-content:center;
+    border-bottom:1px solid var(--line);
+  }
+  .eyelet .hole{
+    width:46px; height:13px; border-radius:20px;
+    background:var(--paper);
+    border:1px solid var(--line);
+    box-shadow:inset 0 1px 2px rgba(23,32,41,.28);
+  }
+
+  /* fascia superiore: eyebrow tipo biglietto */
+  .head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:14px 22px;
+    border-bottom:1px solid var(--line);
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .head .brand{ display:flex; align-items:center; gap:9px; }
+  .head .right{ display:flex; align-items:center; gap:9px; }
+  .dot{
+    width:9px; height:9px; border-radius:50%;
+    background:var(--teal);
+  }
+  .lost .dot{
+    background:var(--amber);
+    animation:pulse 2.2s ease-out infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow:0 0 0 0 rgba(227,154,44,.55); }
+    70%{ box-shadow:0 0 0 12px rgba(227,154,44,0); }
+    100%{ box-shadow:0 0 0 0 rgba(227,154,44,0); }
+  }
+  .code{ font-weight:700; color:var(--ink); }
+
+  /* bandierina italiana */
+  .flag{
+    display:inline-flex;
+    width:21px; height:14px;
+    border-radius:2px;
+    overflow:hidden;
+    border:1px solid var(--line);
+    flex:none;
+  }
+  .flag i{ flex:1; }
+  .flag .g{ background:#008C45; }
+  .flag .w{ background:#F4F5F0; }
+  .flag .r{ background:#CD212A; }
+
+  .body{ padding:28px 26px 26px; }
+
+  .idchip{
+    display:none;
+    align-items:center; gap:12px;
+    margin-bottom:22px;
+  }
+  .idchip .badge{
+    width:44px; height:44px; border-radius:10px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Space Mono',monospace; font-weight:700; font-size:15px;
+    color:var(--amber-deep);
+    background:rgba(227,154,44,.12);
+    border:1px solid rgba(185,121,26,.4);
+  }
+  .idchip .who{
+    font-family:'Space Mono',monospace; font-size:11px;
+    color:var(--ink-soft); text-transform:uppercase; letter-spacing:.08em;
+  }
+  .idchip .who b{
+    display:block;
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:17px;
+    color:var(--ink); letter-spacing:0;
+  }
+  .idchip .who span{ display:inline-flex; align-items:center; gap:6px; }
+
+  .eyebrow{
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    letter-spacing:.12em;
+    text-transform:uppercase;
+    color:var(--amber-deep);
+    margin-bottom:14px;
+  }
+  .safe .eyebrow{ color:var(--teal); }
+
+  h1{
+    font-family:'Space Grotesk',sans-serif;
+    font-weight:700;
+    font-size:clamp(26px,7vw,34px);
+    line-height:1.08;
+    letter-spacing:-.01em;
+    margin-bottom:14px;
+  }
+  h1 .accent{ color:var(--amber-deep); }
+
+  .message{ color:var(--ink-soft); font-size:15.5px; margin-bottom:24px; }
+
+  .actions{ display:flex; flex-direction:column; gap:10px; }
+
+  .btn{
+    display:flex; align-items:center; gap:12px;
+    padding:15px 18px;
+    border-radius:12px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    text-decoration:none;
+    font-weight:600;
+    font-size:15px;
+    transition:transform .12s ease, border-color .12s ease, background .12s ease;
+  }
+  .btn:hover{ transform:translateY(-1px); border-color:var(--ink-soft); }
+  .btn:focus-visible{ outline:3px solid var(--teal); outline-offset:2px; }
+  .btn.primary{
+    background:var(--amber);
+    border-color:var(--amber);
+    color:#241a05;
+  }
+  .btn.primary:hover{ background:var(--amber-deep); border-color:var(--amber-deep); color:#fff; }
+  .btn .ic{ width:20px; text-align:center; font-size:17px; }
+  .btn .lbl{ display:flex; flex-direction:column; line-height:1.2; }
+  .btn .lbl small{ font-weight:400; font-size:12px; color:var(--ink-soft); }
+  .btn.primary .lbl small{ color:#5e4a16; }
+
+  .reward{
+    margin-top:18px;
+    font-size:13.5px;
+    color:var(--ink-soft);
+    display:flex; gap:8px; align-items:flex-start;
+  }
+  .reward .ic{ color:var(--amber-deep); }
+
+  /* perforazione + stub */
+  .perf{
+    position:relative;
+    height:24px;
+    border-top:2px dashed var(--line);
+    margin-top:6px;
+  }
+  .perf::before,.perf::after{
+    content:""; position:absolute; top:-13px;
+    width:24px; height:24px; border-radius:50%;
+    background:var(--paper);
+    border:1px solid var(--line);
+  }
+  .perf::before{ left:-13px; }
+  .perf::after{ right:-13px; }
+
+  .stub{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:2px 26px 22px;
+    font-family:'Space Mono',monospace;
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .stub .ref{ letter-spacing:.05em; }
+  .langs{ display:flex; gap:4px; }
+  .langs button{
+    font:inherit; cursor:pointer;
+    border:1px solid var(--line); background:transparent;
+    color:var(--ink-soft);
+    padding:4px 9px; border-radius:7px;
+    text-transform:uppercase;
+  }
+  .langs button[aria-pressed="true"]{
+    background:var(--ink); color:#fff; border-color:var(--ink);
+  }
+  .langs button:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+
+  .state{ display:none; }
+  .state.on{ display:block; }
+
+  @media (prefers-reduced-motion: reduce){
+    .ticket{ animation:none; opacity:1; transform:none; }
+    .lost .dot{ animation:none; }
+    .btn{ transition:none; }
+  }
+</style>
+</head>
+<body>
+  <main class="ticket" id="ticket">
+    <div class="eyelet" aria-hidden="true"><span class="hole"></span></div>
+
+    <div class="head">
+      <span class="brand"><span class="dot"></span><span id="tagLabel">Found tag</span></span>
+      <span class="right">
+        <span class="flag" role="img" aria-label="Italia"><i class="g"></i><i class="w"></i><i class="r"></i></span>
+        <span class="code" id="refTop">-- -- --</span>
+      </span>
+    </div>
+
+    <div class="body">
+      <!-- STATO: SMARRITO -->
+      <section class="state" id="lostView">
+        <div class="idchip" id="idChip">
+          <span class="badge" id="idInit"></span>
+          <span class="who" id="idWho"></span>
+        </div>
+        <div class="eyebrow" id="lostEyebrow"></div>
+        <h1 id="lostTitle"></h1>
+        <p class="message" id="lostMsg"></p>
+        <div class="actions" id="lostActions"></div>
+        <p class="reward" id="rewardRow" style="display:none">
+          <span class="ic">&#9670;</span><span id="rewardTxt"></span>
+        </p>
+      </section>
+
+      <!-- STATO: A POSTO -->
+      <section class="state" id="safeView">
+        <div class="eyebrow" id="safeEyebrow"></div>
+        <h1 id="safeTitle"></h1>
+        <p class="message" id="safeMsg"></p>
+      </section>
+    </div>
+
+    <div class="perf"></div>
+    <div class="stub">
+      <span class="ref" id="refBottom">ref -- -- --</span>
+      <div class="langs" role="group" aria-label="Language">
+        <button data-lang="it" aria-pressed="false">IT</button>
+        <button data-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </main>
+
+<script>
+/* Dove sta il file che accende/spegne il tag. Se lo tieni nella
+   stessa cartella, lascia './status.json'. */
+const STATUS_URL = './status.json';
+
+/* Contatto di riserva: mostrato SOLO se la pagina non riesce a
+   leggere status.json (es. chi trova e' senza rete). Lascia ''
+   se preferisci non esporre mai nulla offline. */
+const FALLBACK_EMAIL = '';
+
+const I18N = {
+  it: {
+    tag:'Oggetto smarrito', owner:'Proprietario',
+    lostEyebrow:'Grazie per esserti fermato',
+    lostTitleA:'Ciao! Hai trovato', lostTitleB:'il mio zaino.',
+    lostMsg:'Mi faresti un enorme favore ricontattandomi con uno dei modi qui sotto. Grazie di cuore.',
+    safeEyebrow:'Tutto a posto', safeTitle:'Niente da vedere qui.',
+    safeMsg:'Questo tag al momento non e\u2019 attivo: l\u2019oggetto non risulta smarrito.',
+    email:'Scrivimi una mail', emailSub:'Il modo piu\u2019 semplice',
+    whatsapp:'WhatsApp', whatsappSub:'Messaggio o chiamata',
+    phone:'Chiamami', phoneSub:'Telefonata diretta',
+    reward:'Piccola ricompensa prevista come ringraziamento.',
+    offlineMsg:'Non riesco a caricare i dettagli ora. Se hai una connessione riprova, oppure scrivimi qui:',
+    ref:'ref'
+  },
+  en: {
+    tag:'Lost item', owner:'Owner',
+    lostEyebrow:'Thanks for stopping',
+    lostTitleA:'Hi! You found', lostTitleB:'my backpack.',
+    lostMsg:'You\u2019d really help me out by getting in touch through one of the options below. Thank you so much.',
+    safeEyebrow:'All good', safeTitle:'Nothing to see here.',
+    safeMsg:'This tag isn\u2019t active right now: the item isn\u2019t reported lost.',
+    email:'Email me', emailSub:'The easiest way',
+    whatsapp:'WhatsApp', whatsappSub:'Message or call',
+    phone:'Call me', phoneSub:'Direct call',
+    reward:'A small reward is offered as a thank-you.',
+    offlineMsg:'I can\u2019t load the details right now. Try again with a connection, or reach me here:',
+    ref:'ref'
+  }
+};
+
+let LANG = (navigator.language||'it').toLowerCase().startsWith('it') ? 'it' : 'en';
+let DATA = null, OFFLINE = false;
+
+function refCode(){
+  const s = location.pathname + ((DATA&&DATA.email)||FALLBACK_EMAIL||'tag');
+  let h=0; for(const c of s) h=(h*31+c.charCodeAt(0))>>>0;
+  return h.toString(16).toUpperCase().slice(0,4).padStart(4,'0');
+}
+function esc(x){ return (x||'').replace(/[<>&"]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[c])); }
+function initials(n){
+  const p=(n||'').trim().split(/\s+/);
+  return ((p[0]?p[0][0]:'')+(p[1]?p[1][0]:(p[0]?p[0][1]||'':''))).toUpperCase();
+}
+function button(cls,icon,label,sub,href){
+  const a=document.createElement('a');
+  a.className='btn '+cls; a.href=href; a.rel='nofollow';
+  a.innerHTML='<span class="ic">'+icon+'</span><span class="lbl">'+esc(label)+'<small>'+esc(sub)+'</small></span>';
+  return a;
+}
+
+function render(){
+  const t=I18N[LANG];
+  const ticket=document.getElementById('ticket');
+  const code=refCode();
+  const name=(DATA&&DATA.name)?DATA.name:'';
+
+  document.documentElement.lang=LANG;
+  document.getElementById('tagLabel').textContent=t.tag;
+  document.getElementById('refTop').textContent=code;
+  let refTxt=t.ref+' \u00b7 '+code;
+  if(name) refTxt+=' \u00b7 '+name.toUpperCase();
+  document.getElementById('refBottom').textContent=refTxt;
+  document.querySelectorAll('.langs button').forEach(b=>b.setAttribute('aria-pressed', b.dataset.lang===LANG));
+
+  const lostOn = OFFLINE || (DATA && DATA.status==='lost');
+  ticket.classList.toggle('lost',lostOn);
+  ticket.classList.toggle('safe',!lostOn);
+  document.getElementById('lostView').classList.toggle('on',lostOn);
+  document.getElementById('safeView').classList.toggle('on',!lostOn);
+
+  if(!lostOn){
+    document.getElementById('safeEyebrow').textContent=t.safeEyebrow;
+    document.getElementById('safeTitle').textContent=t.safeTitle;
+    document.getElementById('safeMsg').textContent=t.safeMsg;
+    return;
+  }
+
+  const chip=document.getElementById('idChip');
+  if(name){
+    document.getElementById('idInit').textContent=initials(name);
+    document.getElementById('idWho').innerHTML=esc(t.owner)+'<b><span>'+esc(name)+
+      ' <span class="flag" role="img" aria-label="Italia"><i class="g"></i><i class="w"></i><i class="r"></i></span></span></b>';
+    chip.style.display='flex';
+  } else chip.style.display='none';
+
+  document.getElementById('lostEyebrow').textContent=t.lostEyebrow;
+  document.getElementById('lostTitle').innerHTML=esc(t.lostTitleA)+' <span class="accent">'+esc(t.lostTitleB)+'</span>';
+
+  let msg=t.lostMsg;
+  if(OFFLINE) msg=t.offlineMsg;
+  else if(DATA&&DATA['message_'+LANG]) msg=DATA['message_'+LANG];
+  document.getElementById('lostMsg').textContent=msg;
+
+  const box=document.getElementById('lostActions'); box.innerHTML='';
+  const email=OFFLINE?FALLBACK_EMAIL:(DATA&&DATA.email);
+  const wa=!OFFLINE&&DATA&&DATA.whatsapp;
+  const phone=!OFFLINE&&DATA&&DATA.phone;
+  const subject=encodeURIComponent((LANG==='it'?'Ho trovato il tuo zaino':'I found your backpack')+(name?' \u2014 '+name:''));
+
+  if(email) box.appendChild(button('primary','&#9993;',t.email,t.emailSub,'mailto:'+email+'?subject='+subject));
+  if(wa)    box.appendChild(button('','&#128172;',t.whatsapp,t.whatsappSub,'https://wa.me/'+String(wa).replace(/[^0-9]/g,'')));
+  if(phone) box.appendChild(button('','&#128222;',t.phone,t.phoneSub,'tel:'+String(phone).replace(/[^0-9+]/g,'')));
+
+  const rw=document.getElementById('rewardRow');
+  if(!OFFLINE&&DATA&&DATA.reward){ rw.style.display='flex'; document.getElementById('rewardTxt').textContent=t.reward; }
+  else rw.style.display='none';
+}
+
+async function load(){
+  try{
+    const res=await fetch(STATUS_URL+'?t='+Date.now(),{cache:'no-store'});
+    if(!res.ok) throw new Error('status '+res.status);
+    DATA=await res.json(); OFFLINE=false;
+  }catch(e){
+    OFFLINE=!!FALLBACK_EMAIL;
+    DATA=OFFLINE?null:{status:'safe'};
+  }
+  render();
+}
+
+document.querySelectorAll('.langs button').forEach(b=>b.addEventListener('click',()=>{ LANG=b.dataset.lang; render(); }));
+load();
+</script>
+</body>
+</html>
