@@ -438,21 +438,13 @@ async function load(){
   try{
     const res=await fetch(STATUS_URL+'?t='+Date.now(),{cache:'no-store'});
     if(!res.ok) throw new Error('status '+res.status);
-    
-    // Leggiamo la risposta dell'API
-    const apiData = await res.json();
-    
-    // Apriamo la matrioska: files -> status.json -> content
-    const fileContent = apiData.files['status.json'].content;
-    
-    // Trasformiamo il testo in dati veri e propri
-    DATA = JSON.parse(fileContent); 
-    OFFLINE = false;
+    DATA=await res.json(); OFFLINE=false;
   }catch(e){
-    console.error("Ecco l'errore:", e);
-    OFFLINE = !!FALLBACK_EMAIL;
-    DATA = OFFLINE ? null : {status:'safe'};
+    OFFLINE=!!FALLBACK_EMAIL;
+    DATA=OFFLINE?null:{status:'safe'};
   }
+  render();
+}
 
 document.querySelectorAll('.langs button').forEach(b=>b.addEventListener('click',()=>{ LANG=b.dataset.lang; render(); }));
 load();
