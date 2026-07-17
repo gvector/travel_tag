@@ -5,6 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="noindex, nofollow" />
 <title>Found Tag</title>
+
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Hai trovato qualcosa di mio? / Found something of mine?" />
+<meta property="og:description" content="Questa pagina ti dice come restituirlo. Grazie per esserti fermato. — This page tells you how to return it. Thanks for stopping." />
+<meta property="og:locale" content="it_IT" />
+<meta property="og:locale:alternate" content="en_GB" />
+<meta name="twitter:card" content="summary" />
+<meta name="theme-color" content="#EDEFEA" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#121518" media="(prefers-color-scheme: dark)" />
+
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
@@ -16,34 +26,42 @@
      ============================================================ */
 
   :root{
-    --paper:      #EDEFEA;
-    --ticket:     #F7F8F5;
-    --ink:        #172029;
-    --ink-soft:   #5A6672;
-    --line:       #CDD3C9;
-    --amber:      #E39A2C;
-    --amber-deep: #B9791A;
-    --teal:       #2E7C6E;
-    --radius:     18px;
-    --shadow:     0 24px 60px -28px rgba(23,32,41,.45);
-    --btn-bg:     #ffffff;
-    --btn-prim-text: #241a05;
+    --paper:              #EDEFEA;
+    --ticket:             #F7F8F5;
+    --ink:                #172029;
+    --ink-soft:           #5A6672;
+    --line:               #CDD3C9;
+    --amber:              #E39A2C;
+    --amber-deep:         #B9791A;
+    --teal:               #2E7C6E;
+    --radius:             18px;
+    --shadow:             0 24px 60px -28px rgba(23,32,41,.45);
+    --btn-bg:             #ffffff;
+    --btn-prim-text:      #241a05;
+    --btn-prim-sub:       #5e4a16;
+    --btn-prim-hov-text:  #ffffff;
+    --lang-active-bg:     var(--ink);
+    --lang-active-text:   var(--ticket);
   }
 
   /* --- INIZIO DARK THEME AUTOMATICO --- */
   @media (prefers-color-scheme: dark) {
     :root {
-      --paper:      #121518; /* Sfondo generale (e ritagli del biglietto) */
-      --ticket:     #1C2126; /* Colore del biglietto */
-      --ink:        #E4E8EC; /* Testo principale chiaro */
-      --ink-soft:   #8B96A0; /* Testo secondario grigio */
-      --line:       #323A42; /* Linee di divisione scure */
-      --amber:      #EEA435; /* Arancione per bottoni */
-      --amber-deep: #F4C175; /* Arancione chiaro per testi */
-      --teal:       #4CCBAA; /* Verde brillante per stato "safe" */
-      --shadow:     0 24px 60px -20px rgba(0,0,0,0.8);
-      --btn-bg:     #252A30; /* Sfondo bottoni scuri */
-      --btn-prim-text: #1a1305; /* Testo scuro su bottone arancione */
+      --paper:              #121518; /* Sfondo generale (e ritagli del biglietto) */
+      --ticket:             #1C2126; /* Colore del biglietto */
+      --ink:                #E4E8EC; /* Testo principale chiaro */
+      --ink-soft:           #8B96A0; /* Testo secondario grigio */
+      --line:               #323A42; /* Linee di divisione scure */
+      --amber:              #EEA435; /* Arancione per bottoni */
+      --amber-deep:         #F4C175; /* Arancione chiaro per testi */
+      --teal:               #4CCBAA; /* Verde brillante per stato "safe" */
+      --shadow:             0 24px 60px -20px rgba(0,0,0,0.8);
+      --btn-bg:             #252A30; /* Sfondo bottoni scuri */
+      --btn-prim-text:      #1a1305; /* Testo scuro su bottone arancione */
+      --btn-prim-sub:       #5e4a16; /* Sottotitolo su bottone arancione */
+      --btn-prim-hov-text:  #1a1305; /* Scuro su amber chiaro in hover */
+      --lang-active-bg:     var(--ink);
+      --lang-active-text:   var(--ticket); /* Scuro su chiaro: leggibile */
     }
   }
 
@@ -194,7 +212,7 @@
     padding:15px 18px;
     border-radius:12px;
     border:1px solid var(--line);
-    background:#fff;
+    background:var(--btn-bg);
     color:var(--ink);
     text-decoration:none;
     font-weight:600;
@@ -206,13 +224,13 @@
   .btn.primary{
     background:var(--amber);
     border-color:var(--amber);
-    color:#241a05;
+    color:var(--btn-prim-text);
   }
-  .btn.primary:hover{ background:var(--amber-deep); border-color:var(--amber-deep); color:#fff; }
+  .btn.primary:hover{ background:var(--amber-deep); border-color:var(--amber-deep); color:var(--btn-prim-hov-text); }
   .btn .ic{ width:20px; text-align:center; font-size:17px; }
   .btn .lbl{ display:flex; flex-direction:column; line-height:1.2; }
   .btn .lbl small{ font-weight:400; font-size:12px; color:var(--ink-soft); }
-  .btn.primary .lbl small{ color:#5e4a16; }
+  .btn.primary .lbl small{ color:var(--btn-prim-sub); }
 
   .reward{
     margin-top:18px;
@@ -255,7 +273,9 @@
     text-transform:uppercase;
   }
   .langs button[aria-pressed="true"]{
-    background:var(--ink); color:#fff; border-color:var(--ink);
+    background:var(--lang-active-bg);
+    color:var(--lang-active-text);
+    border-color:var(--lang-active-bg);
   }
   .langs button:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
 
@@ -293,7 +313,7 @@
         <p class="message" id="lostMsg"></p>
         <div class="actions" id="lostActions"></div>
         <p class="reward" id="rewardRow" style="display:none">
-          <span class="ic">&#9670;</span><span id="rewardTxt"></span>
+          <span class="ic" aria-hidden="true">&#9670;</span><span id="rewardTxt"></span>
         </p>
       </section>
 
@@ -357,7 +377,18 @@ const I18N = {
   }
 };
 
-let LANG = (navigator.language||'it').toLowerCase().startsWith('it') ? 'it' : 'en';
+function pickLang(){
+  const prefs = (navigator.languages && navigator.languages.length)
+    ? navigator.languages
+    : [navigator.language || 'en'];
+  for (const l of prefs){
+    const code = String(l).toLowerCase().slice(0,2);
+    if (I18N[code]) return code;
+  }
+  return 'en';
+}
+
+let LANG = pickLang();
 let DATA = null, OFFLINE = false;
 
 function refCode(){
@@ -373,7 +404,7 @@ function initials(n){
 function button(cls,icon,label,sub,href){
   const a=document.createElement('a');
   a.className='btn '+cls; a.href=href; a.rel='nofollow';
-  a.innerHTML='<span class="ic">'+icon+'</span><span class="lbl">'+esc(label)+'<small>'+esc(sub)+'</small></span>';
+  a.innerHTML='<span class="ic" aria-hidden="true">'+icon+'</span><span class="lbl">'+esc(label)+'<small>'+esc(sub)+'</small></span>';
   return a;
 }
 
@@ -435,9 +466,13 @@ function render(){
   else rw.style.display='none';
 }
 
+const FETCH_TIMEOUT_MS = 5000;
+
 async function load(){
+  const ctrl = new AbortController();
+  const timer = setTimeout(()=>ctrl.abort(), FETCH_TIMEOUT_MS);
   try{
-    const res=await fetch(STATUS_URL+'?t='+Date.now(),{cache:'no-store'});
+    const res=await fetch(STATUS_URL+'?t='+Date.now(),{cache:'no-store',signal:ctrl.signal});
     if(!res.ok) throw new Error('status '+res.status);
     
     // Leggiamo la risposta dell'API
@@ -450,9 +485,11 @@ async function load(){
     DATA = JSON.parse(fileContent); 
     OFFLINE = false;
   }catch(e){
-    console.error("Ecco l'errore:", e); // <-- Aggiungi questa riga!
+    console.error("Ecco l'errore:", e);
     OFFLINE = !!FALLBACK_EMAIL;
     DATA = OFFLINE ? null : {status:'safe'};
+  }finally{
+    clearTimeout(timer);
   }
   render();
 }
