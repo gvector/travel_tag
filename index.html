@@ -228,6 +228,7 @@
   }
   .btn.primary:hover{ background:var(--amber-deep); border-color:var(--amber-deep); color:var(--btn-prim-hov-text); }
   .btn .ic{ width:20px; text-align:center; font-size:17px; }
+  .btn .ic svg{ width:20px; height:20px; display:block; }
   .btn .lbl{ display:flex; flex-direction:column; line-height:1.2; }
   .btn .lbl small{ font-weight:400; font-size:12px; color:var(--ink-soft); }
   .btn.primary .lbl small{ color:var(--btn-prim-sub); }
@@ -401,7 +402,13 @@ function initials(n){
   const p=(n||'').trim().split(/\s+/);
   return ((p[0]?p[0][0]:'')+(p[1]?p[1][0]:(p[0]?p[0][1]||'':''))).toUpperCase();
 }
-function button(cls,icon,label,sub,href){
+const ICONS = {
+  mail:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3.5 7.5 12 13.5l8.5-6"/></svg>',
+  chat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.9 8.9 0 0 1-4.1-1L3 20.5l1.6-4.8A8.4 8.4 0 0 1 12 3.1a8.4 8.4 0 0 1 9 8.4Z"/></svg>',
+  phone:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2Z"/></svg>'
+};
+
+function button(cls,icon,label,sub,href){ 
   const a=document.createElement('a');
   a.className='btn '+cls; a.href=href; a.rel='nofollow';
   a.innerHTML='<span class="ic" aria-hidden="true">'+icon+'</span><span class="lbl">'+esc(label)+'<small>'+esc(sub)+'</small></span>';
@@ -457,11 +464,11 @@ function render(){
   const phone=!OFFLINE&&DATA&&DATA.phone;
   const subject=encodeURIComponent((LANG==='it'?'Ho trovato il tuo zaino':'I found your backpack')+(name?' \u2014 '+name:''));
 
-  if(email) box.appendChild(button('primary','&#9993;',t.email,t.emailSub,'mailto:'+email+'?subject='+subject));
-  if(wa)    box.appendChild(button('','&#128172;',t.whatsapp,t.whatsappSub,'https://wa.me/'+String(wa).replace(/[^0-9]/g,'')));
-  if(phone) box.appendChild(button('','&#128222;',t.phone,t.phoneSub,'tel:'+String(phone).replace(/[^0-9+]/g,'')));
-
+  if(email) box.appendChild(button('primary',ICONS.mail,t.email,t.emailSub,'mailto:'+email+'?subject='+subject));
+  if(wa)    box.appendChild(button('',ICONS.chat,t.whatsapp,t.whatsappSub,'https://wa.me/'+String(wa).replace(/[^0-9]/g,'')));
+  if(phone) box.appendChild(button('',ICONS.phone,t.phone,t.phoneSub,'tel:'+String(phone).replace(/[^0-9+]/g,'')));
   const rw=document.getElementById('rewardRow');
+  
   if(!OFFLINE&&DATA&&DATA.reward){ rw.style.display='flex'; document.getElementById('rewardTxt').textContent=t.reward; }
   else rw.style.display='none';
 }
